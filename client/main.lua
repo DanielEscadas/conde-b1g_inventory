@@ -116,7 +116,7 @@ Citizen.CreateThread(function()
         Citizen.Wait(7)
         if not IsPlayerDead(PlayerId()) then
             DisableControlAction(0, 37, true)
-            if IsDisabledControlJustPressed(1, 37) and GetLastInputMethod(0) then
+            if IsDisabledControlJustPressed(1, Config.OpenControl) and GetLastInputMethod(0) then
                -- if IsInputDisabled(0) then
                     openInventory()
                --[[  if not HasAnimDictLoaded('amb@prop_human_parking_meter@male@base') then
