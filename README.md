@@ -1,6 +1,6 @@
 # conde-b1g_inventory 1.0.0
 
-Inventory HUD for ESX based on TSRAK esx_inventoryhud.
+Inventory HUD for ESX based on TSRAK esx_inventoryhud made by me and B1G https://github.com/CarlosVergikosk.
 
 Most of the code of the shops was taken from SUKU's suku shops for esx_inventoryhud, although some features were added, like ilegal shop, police shop, price easily changeable on the config, and some other spicy stuff :)
 
@@ -47,7 +47,7 @@ That's pretty much it, this is like the ultimate inventory hud that you can have
 
 
 ## Screens
-- TBA
+-https://cdn.discordapp.com/attachments/696693383782989824/741460412863610960/unknown.png
 
 
 ## Commands
