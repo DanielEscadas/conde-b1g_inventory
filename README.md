@@ -47,8 +47,7 @@ That's pretty much it, this is like the ultimate inventory hud that you can have
 
 
 ## Screens
--https://cdn.discordapp.com/attachments/696693383782989824/741460412863610960/unknown.png
-
+[<img src="https://cdn.discordapp.com/attachments/696693383782989824/741460412863610960/unknown.png">]
 
 ## Commands
 * **/steal** - Steals nearby player's inventory
