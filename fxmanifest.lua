@@ -39,7 +39,7 @@ files {
   "html/locales/fr.js",
   -- IMAGES
   "html/img/bullet.png",
-  "html/img/*.svg"
+  "html/img/*.svg",
   -- ITEMSSSSSSSSSSSSSSSSS PICS
-
+  "html/img/bread.png"
 }
