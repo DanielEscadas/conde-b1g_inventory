@@ -62,7 +62,7 @@ That's pretty much it, this is like the ultimate inventory hud that you can have
 - This should be pretty much drag and drop, change the essentialmode on the sql file to whatever is your database name, and run it.
 - To add the notifications, just trigger this event on your es_extended classes/player functions. Ex: addInventoryItem, removeInventoryItem, addMoney, removeMoney:
 
-			TriggerClientEvent('conde-inventoryhud:notification', (playerid), (item name), (item label), (count) , (if you add the item then set thist to false, if you receive set this to true))
+			TriggerClientEvent('conde-inventoryhud:notification', (playerid), (item name), (item label), (count) , (if you add the item then set thist to false, if you remove set this to true))
 - To make the status to work just change the events on line 250 client/main of the inventory, to your basic needs or stress events.
 
 
