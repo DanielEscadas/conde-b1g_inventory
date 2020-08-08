@@ -58,7 +58,7 @@ That's pretty much it, this is like the ultimate inventory hud that you can have
 * **/closeinventory** - Closes the inventory if needed
 
 ## Installation
-
+- Download the code and change the folder name to conde-b1g_inventory
 - This should be pretty much drag and drop, change the essentialmode on the sql file to whatever is your database name, and run it.
 - To add the notifications, just trigger this event on your es_extended classes/player functions. Ex: addInventoryItem, removeInventoryItem, addMoney, removeMoney:
 
