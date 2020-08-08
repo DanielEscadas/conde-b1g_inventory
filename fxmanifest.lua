@@ -4,7 +4,7 @@ game 'gta5'
 
 description "conde-b1g_inventory"
 
-version "1.1"
+version "1.0"
 
 ui_page "html/ui.html"
 
