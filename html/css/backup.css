@@ -1,0 +1,352 @@
+* {
+    padding: 0;
+    margin: 0;
+    font-family: 'Signika', sans-serif;
+    text-transform: uppercase;
+    color: white;
+    text-shadow:
+            -0.5px -0.5px 0 #000,
+            0.5px -0.5px 0 #000,
+            -0.5px 0.5px 0 #000,
+            0.5px 0.5px 0 #000;
+}
+.ui {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    z-index: 0;
+}
+
+.inventory {
+    position: absolute;
+    left: 25%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+    width: 590px;
+    height: 495px;
+
+   /* background-color: rgba(17, 5, 17, 0.2);*/
+    background-color: rgba(128,128,128,0.1);
+}
+
+#playerInventory {
+    width: 590px;
+    height: 495px;
+    float: left;
+    overflow-y: scroll;
+}
+#playerInventoryFastItems {
+    width: 590px;
+    height: 50px;
+    position : absolute;
+    bottom : -10%;
+    left: 0%;
+    z-index: 100;
+    float:left;
+
+
+}
+#playerInventoryHotbar {
+    width: 590px;
+    height: 50px;
+    position : fixed;
+    bottom : 8%;
+    left: 35%;
+    z-index: 100;
+    float:left;
+}
+#controls {
+    width: 400px;
+    height: 70px;
+    float: left;
+    position: absolute;
+
+    left: 102.5%;
+    top: 0%;
+}
+
+#otherInventory {
+    width: 590px;
+    height: 500px;
+    float: left;
+    overflow-y: scroll;
+    position: absolute;
+    top: 23%;
+    left:63%;
+    /* background-color: rgba(17, 5, 17, 0.2);*/
+    background-color: rgba(128,128,128,0.1);
+}
+
+#count {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    outline: none;
+    font-size: 18px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.slot {
+    float: left;
+    width: 100px;
+    height: 100px;
+    /*background-color: rgba(17, 5, 17, 0.6);
+    margin: 2px;
+    position: relative;*/
+    margin: 7px;
+    position: relative;
+    background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,5) 0%, rgba(255,255,255,0) 100%); /* ff3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(192,192,192,0)), color-stop(100%, rgba(255,255,255,1))); /* safari4+,chrome */
+    background:-webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* safari5.1+,chrome10+ */
+    background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* opera 11.10+ */
+    background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* ie10+ */
+    background:radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* w3c */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c0c0c0', endColorstr='#ffffff',GradientType=1 ); /* ie6-9 */
+    border-style: solid;
+    border-width: 1px;
+    border-color:  rgba(170,170,170,0.8);
+
+}
+
+.slot:hover {
+    background-color: rgba(170,170,170,0.6);
+
+
+}
+.slotFast {
+    float: left;
+    width: 100px;
+    height: 100px;
+    /*background-color: rgba(255, 153, 0, 0.6);
+    margin: 2px;
+    position: relative;*/
+    margin: 6px;
+    position: relative;
+    position: relative;
+    background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,5) 0%, rgba(255,255,255,0) 100%); /* ff3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, rgba(192,192,192,0)), color-stop(100%, rgba(255,255,255,1))); /* safari4+,chrome */
+    background:-webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* safari5.1+,chrome10+ */
+    background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* opera 11.10+ */
+    background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* ie10+ */
+    background:radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(255,255,255,0) 100%); /* w3c */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c0c0c0', endColorstr='#ffffff',GradientType=1 ); /* ie6-9 */
+    border-style: solid;
+    border-width: 1px;
+    border-color:  rgba(170,170,170,0.6);
+
+
+}
+
+.slotFast:hover {
+    opacity: 0.8;
+}
+
+.item,
+
+.item-other {
+    width: 100px;
+    height: 100px;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: 50% 30%;
+}
+
+.item2{
+    width: 100px;
+    height: 100px;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    background-position: 50% 30%;
+}
+
+
+.item-name {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 98px;
+    min-height: 8px;
+    z-index: 500;
+    font-size: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color:  rgba(170,170,170,0.6);
+    background-color: rgba(63,63,63,0.6);
+}
+
+.ui-draggable-dragging .item-name,
+.ui-draggable-dragging .item-count {
+    display: none;
+}
+
+.item-count {
+    position: absolute;
+    top: 0;
+    text-align: right;
+    width: 100px;
+    height: 20px;
+    z-index: 500;
+    font-size: 16px;
+}
+.keybind {
+    position: absolute;
+    top: 0;
+    text-align: left;
+    width: 20px;
+    height: 20px;
+    z-index: 500;
+    background-color: rgba(9, 9, 9, 0.8);
+    text-align: center;
+}
+.ammoIcon {
+    width: 8px;
+    height: 8px;
+}
+
+.info-div {
+
+    width: 60%;
+    height: 70%;
+    position: absolute;
+    left: 19.5%;
+    top: -30%;
+    background-color: rgba(63,63,63,0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: 0.2s;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    line-height: 40px;
+    float: left;
+
+}
+
+.controls-div {
+    position: relative;
+    left: 75%;
+    top: 430%;
+    transform: translate(-50%, -50%);
+    float: left;
+}
+
+#notificacao {
+
+    position: absolute;
+    top: 70%;
+    left:48.5%;
+}
+
+
+.control {
+    width: 250px;
+    height: 50px;
+    margin-top: 15px;
+    background-color: rgba(63,63,63,0.6);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    transition: 0.2s;
+    margin-right: 200px;
+    margin-bottom: 25px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 16px;
+    line-height: 40px;
+    float: left;
+}
+.control.disabled {
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.0);
+    transition: 0.2s;
+}
+
+.hoverControl {
+    background-color: rgba(235, 235, 235, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: 0.2s;
+}
+
+.item-name-bg {
+    width: 100%;
+    width: 100px;
+    height: 16px;
+    position: absolute;
+    bottom: 0;
+}
+
+#playerInventory::-webkit-scrollbar-track,
+#otherInventory::-webkit-scrollbar-track {
+    background-color: none;
+    border: none;
+}
+
+#playerInventory::-webkit-scrollbar,
+#otherInventory::-webkit-scrollbar {
+    width: 5px;
+    background-color:   rgba(120,120,120,0.5);
+}
+#playerInventory::-webkit-scrollbar-thumb,
+#otherInventory::-webkit-scrollbar-thumb {
+    background-color: rgba(127, 63, 191, 0.4);
+    border: 2px solid rgba(127, 63, 191, 0.17);
+}
+
+.nearbyPlayerButton {
+    width: 100%;
+    margin-top: 5px;
+    display: block;
+    text-decoration: none;
+    padding: 2px;
+    color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(63, 57, 83, 0.226);
+    text-shadow: none;
+    font-size: 14px !important;
+    outline: none;
+    text-transform: none;
+    text-align: center;
+    line-height: 30px;
+    border: none;
+}
+.nearbyPlayerButton:hover {
+    background-color: rgba(34, 29, 46, 0.8);
+}
+
+#noSecondInventoryMessage {
+    width: 615px;
+    height: 580px;
+    line-height: 580px;
+    text-align: center;
+}
+
+@media (max-width: 400px) {
+    .inventory {
+        width: 200px;
+    }
+
+    #playerInventory {
+        width: 150px;
+    }
+
+    #controls {
+        width: 200px;
+    }
+
+    #otherInventory {
+        width: 150px;
+    }
+
+    #noSecondInventoryMessage {
+        width: 100px;
+    }
+}
+
