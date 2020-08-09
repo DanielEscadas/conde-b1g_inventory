@@ -41,5 +41,5 @@ files {
   "html/img/bullet.png",
   "html/img/*.svg",
   -- ITEMSSSSSSSSSSSSSSSSS PICS
-  "html/img/*.png"
+  "html/img/items/*.png"
 }
