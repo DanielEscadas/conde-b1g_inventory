@@ -62,7 +62,58 @@ That's pretty much it, this is like the ultimate inventory hud that you can have
 - This should be pretty much drag and drop, change the essentialmode on the sql file to whatever is your database name, and run it.
 - To add the notifications, just trigger this event on your es_extended classes/player functions. Ex: addInventoryItem, removeInventoryItem, addMoney, removeMoney:
 
-			TriggerClientEvent('conde-inventoryhud:notification', (playerid), (item name), (item label), (count) , (if you add the item then set thist to false, if you remove set this to true))
+			
+	self.addMoney = function(money)
+		money = ESX.Math.Round(money)
+
+		if money >= 0 then
+			self.player.addMoney(money)
+			TriggerClientEvent('conde-inventoryhud:notification',self.source, "cash", "Money", money, false)
+		end
+	end
+
+	self.removeMoney = function(money)
+		money = ESX.Math.Round(money)
+
+		if money > 0 then
+			self.player.removeMoney(money)
+			TriggerClientEvent('conde-inventoryhud:notification',self.source, "cash", "Money", money, true)
+		end
+	end
+	
+	
+		self.addInventoryItem = function(name, count)
+		local item = self.getInventoryItem(name)
+
+		if item then
+			count = ESX.Math.Round(count)
+
+			local newCount = item.count + count
+			item.count = newCount
+
+			TriggerEvent('esx:onAddInventoryItem', self.source, item.name, item.count)
+			self.triggerEvent('esx:addInventoryItem', item.name, item.count)
+			TriggerClientEvent('conde-inventoryhud:notification', self.source, item.name, item.label, count, false)
+		end
+	end
+
+	self.removeInventoryItem = function(name, count)
+		local item = self.getInventoryItem(name)
+
+		if item then
+			count = ESX.Math.Round(count)
+			local newCount = item.count - count
+
+			if newCount >= 0 then
+				item.count = newCount
+
+				TriggerEvent('esx:onRemoveInventoryItem', self.source, item.name, item.count)
+				self.triggerEvent('esx:removeInventoryItem', item.name, item.count)
+				TriggerClientEvent('conde-inventoryhud:notification',self.source, item.name, item.label, count, true)
+			end
+		end
+	end
+
 - To make the status to work just change the events on line 250 client/main of the inventory, to your basic needs or stress events.
 
 
