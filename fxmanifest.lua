@@ -11,6 +11,7 @@ ui_page "html/ui.html"
 client_scripts {
   "@es_extended/locale.lua",
   "client/main.lua",
+  "client/player.lua",
   "client/shop.lua",
   "client/weapons.lua",
   "common/weapons.lua",
