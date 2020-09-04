@@ -45,12 +45,13 @@ ESX.RegisterServerCallback('conde_inventory:takePlayerItem', function(source, cb
     end
 end)
 
-RegisterNetEvent('conde_inventory:addPlayerItem')
-AddEventHandler('conde_inventory:addPlayerItem', function(item, count)
+ESX.RegisterServerCallback('tqrp_inventoryhud:addPlayerItem', function(source, cb, item, count)
     local player = ESX.GetPlayerFromId(source)
-    local invItem = player.getInventoryItem(item)
-    if player.canCarryItem(item, count) then
-        player.addInventoryItem(item, count)
+	if player.canCarryItem(item, count) then
+		player.addInventoryItem(item, count)
+		cb(true)
+	else
+		cb(false)
 	end
 end)
 
@@ -437,18 +438,20 @@ Citizen.CreateThread(function()
 end)
 
 RegisterServerEvent('conde-inventoryhud:updateAmmoCount')
-AddEventHandler('conde-inventoryhud:updateAmmoCount', function(hash, count)
+AddEventHandler('conde-inventoryhud:updateAmmoCount', function(hash, wepInfo)
 	local player = ESX.GetPlayerFromId(source)
-	MySQL.Async.execute('UPDATE disc_ammo SET count = @count WHERE hash = @hash AND owner = @owner', {
+	MySQL.Async.execute('UPDATE disc_ammo SET count = @count, attach = @attach WHERE hash = @hash AND owner = @owner', {
 		['@owner'] = player.identifier,
 		['@hash'] = hash,
-		['@count'] = count
+		['@count'] = wepInfo.count,
+		['@attach'] = json.encode(wepInfo.attach)
 	}, function(results)
 		if results == 0 then
-			MySQL.Async.execute('INSERT INTO disc_ammo (owner, hash, count) VALUES (@owner, @hash, @count)', {
+			MySQL.Async.execute('INSERT INTO disc_ammo (owner, hash, count, attach) VALUES (@owner, @hash, @count, @attach)', {
 				['@owner'] = player.identifier,
 				['@hash'] = hash,
-				['@count'] = count
+				['@count'] = wepInfo.count,
+				['@attach'] = json.encode(wepInfo.attach)
 			})
 		end
 	end)
@@ -461,11 +464,28 @@ ESX.RegisterServerCallback('conde-inventoryhud:getAmmoCount', function(source, c
 		['@hash'] = hash
 	}, function(results)
 		if #results == 0 then
-			cb(nil)
+			local cbResult = {
+				ammoCount = nil,
+				attachments = {}
+			}
+			cb(cbResult)
 		else
-			cb(results[1].count)
+			local cbResult = {
+				ammoCount = results[1].count,
+				attachments = json.decode(results[1].attach)
+			}
+			cb(cbResult)
 		end
 	end)
+end)
+
+
+Citizen.CreateThread(function()
+	for i = 1, #Config.Attachments do
+		ESX.RegisterUsableItem(Config.Attachments[i], function(source)
+			TriggerClientEvent("tqrp_inventoryhud:useAttach", source, Config.Attachments[i])
+		end)
+	end
 end)
 
 ESX.RegisterServerCallback('GetCharacterNameServer', function(source, cb, target) -- GR10
