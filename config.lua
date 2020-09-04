@@ -7,6 +7,8 @@ Config.ExcludeAccountsList = {"bank"} -- List of accounts names to exclude from 
 Config.OpenControl = 349 -- Key for opening inventory. Edit html/js/config.js to change key for closing it.
 Config.MaxWeight = 80 --SAME AS THE DEFAULT ON ES EXTENDED CONFIG
 
+Config.Attachments = {"flashlight", "grip", "scope", "skin", "suppressor"}
+
 -- List of item names that will close ui when used
 Config.CloseUiItems = {
   'bread',

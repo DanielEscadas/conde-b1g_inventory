@@ -75,3 +75,10 @@ INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`
 INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('WEAPON_SWITCHBLADE', 'Switch Blade', 1, 0, 1);
 INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('WEAPON_VINTAGEPISTOL', 'Vintage Pistol', 1, 0, 1);
 INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('WEAPON_WRENCH', 'Wrench', 1, 0, 1);
+INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('flashlight', 'Flashlight', 2, 0, 1);
+INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('grip', 'Grip', 2, 0, 1);
+INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('scope', 'Scope', 2, 0, 1);
+INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('skin', 'Skin', 2, 0, 1);
+INSERT INTO essentialmode.items (`name`, `label`, `weight`, `rare`, `can_remove`) VALUES ('supressor', 'Suppressor', 2, 0, 1);
+
+ALTER TABLE `disc_ammo` ADD COLUMN `attach` TEXT NOT NULL DEFAULT '[]' AFTER `count`;

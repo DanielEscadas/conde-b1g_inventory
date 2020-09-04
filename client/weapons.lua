@@ -17,6 +17,7 @@ end)
 
 local currentWeapon
 local currentWeaponSlot
+local currentWepAttachs = {}
 canFire = true
 
 RegisterNetEvent('conde-inventoryhud:useWeapon')
@@ -46,17 +47,75 @@ AddEventHandler('conde-inventoryhud:removeCurrentWeapon', function()
     end
 end)
 
+RegisterNetEvent('tqrp_inventoryhud:useAttach')
+AddEventHandler('tqrp_inventoryhud:useAttach', function(attach)
+    local playerPed = PlayerPedId()
+    local hasAttach = false
+    if currentWeapon ~= nil then
+        local hash = GetHashKey(currentWeapon)
+        for i = 1, #currentWepAttachs do
+            if currentWepAttachs[i] == attach then
+                hasAttach = true
+            end
+        end
+        if weapons[hash] ~= nil and  weapons[hash][attach] ~= nil and not hasAttach then
+            ESX.TriggerServerCallback('tqrp_inventoryhud:takePlayerItem', function(cb)
+                if cb then
+                    table.insert(currentWepAttachs, attach)
+                    GiveWeaponComponentToPed(playerPed, hash, weapons[hash][attach])
+                else
+                    exports['mythic_notify']:SendAlert('error', 'Ocorreu um erro.')
+                end
+            end, attach, 1)
+        else
+            exports['mythic_notify']:SendAlert('error', 'Esse attachment não é compativel ou já se encontra equipado.')
+        end
+    else
+        exports['mythic_notify']:SendAlert('error', 'Nenhuma arma selecionada.')
+    end
+end)
+
+RegisterCommand("desequipar", function(source, args, rawCommand)
+    if currentWeapon ~= nil then
+        local playerPed = PlayerPedId()
+        local hash = GetHashKey(currentWeapon)
+        if args[1] then
+            local attach = args[1]
+            for i = 1, #currentWepAttachs do
+                if currentWepAttachs[i] == attach then
+                    ESX.TriggerServerCallback('tqrp_inventoryhud:addPlayerItem', function(cb)
+                        if cb then
+                            table.remove(currentWepAttachs, i)
+                            RemoveWeaponComponentFromPed(playerPed, hash, weapons[hash][attach])
+                        else
+                            exports['mythic_notify']:SendAlert('error', 'Espaço insuficiente.')
+                        end          
+                    end, currentWepAttachs[i], 1)
+                    return
+                end
+            end
+            exports['mythic_notify']:SendAlert('error', 'Essa arma não tem esse attachment.')
+        end
+    else
+        exports['mythic_notify']:SendAlert('error', 'Não tens nenhuma arma na mão.')
+    end
+end)
+
 function RemoveWeapon(weapon)
     local checkh = Config.Throwables
     local playerPed = PlayerPedId()
     local hash = GetHashKey(weapon)
-    local ammoCount = GetAmmoInPedWeapon(playerPed, hash)
-    TriggerServerEvent('conde-inventoryhud:updateAmmoCount', hash, ammoCount)
+    local wepInfo = { 
+        count = GetAmmoInPedWeapon(playerPed, hash),
+        attach = currentWepAttachs
+    }
+    TriggerServerEvent('conde-inventoryhud:updateAmmoCount', hash, wepInfo)
     canFire = false
     disable()
     if checkh[weapon] == hash then
         if GetSelectedPedWeapon(playerPed) == hash then
-            TriggerServerEvent('conde_inventory:addPlayerItem', weapon, 1)
+            ESX.TriggerServerCallback('tqrp_inventoryhud:addPlayerItem', function(cb)
+            end, weapon, 1)
         end
     end
     if PlayerData.job ~= nil and PlayerData.job.name == 'police' then --and GetWeapontypeGroup(hash) == 416676503 then
@@ -64,7 +123,7 @@ function RemoveWeapon(weapon)
             loadAnimDict( "reaction@intimidation@cop@unarmed" )
         end
         TaskPlayAnim(playerPed, "reaction@intimidation@cop@unarmed", "outro", 8.0, 2.0, -1, 50, 2.0, 0, 0, 0 )
-		Citizen.Wait(60)
+		Citizen.Wait(100)
     else
         if not HasAnimDictLoaded("reaction@intimidation@1h") then
             loadAnimDict( "reaction@intimidation@1h" )
@@ -101,7 +160,8 @@ function GiveWeapon(weapon)
             canFire = true
         end
     else
-      ESX.TriggerServerCallback('conde-inventoryhud:getAmmoCount', function(ammoCount)
+      ESX.TriggerServerCallback('conde-inventoryhud:getAmmoCount', function(gunInfo)
+        currentWepAttachs = gunInfo.attachments
         canFire = false
         disable()
         if PlayerData.job ~= nil and PlayerData.job.name == 'police' then --and GetWeapontypeGroup(hash) == 416676503 then
@@ -109,20 +169,25 @@ function GiveWeapon(weapon)
                 loadAnimDict( "rcmjosh4" )
             end
             TaskPlayAnim(playerPed, "rcmjosh4", "josh_leadout_cop2", 8.0, 2.0, -1, 48, 10, 0, 0, 0 )
-            Citizen.Wait(400)
+            Citizen.Wait(500)
         else
             TaskPlayAnimAdvanced(playerPed, "reaction@intimidation@1h", "intro", GetEntityCoords(playerPed, true), 0, 0, GetEntityHeading(playerPed), 8.0, 3.0, -1, 50, 0, 0, 0)          
             Citizen.Wait(1600)
         end
         GiveWeaponToPed(playerPed, hash, 1, false, true)
+        for i = 1, #currentWepAttachs do
+            if weapons[hash] ~= nil then
+                GiveWeaponComponentToPed(playerPed, hash, weapons[hash][currentWepAttachs[i]])
+            end
+        end
         if checkh[weapon] == hash then
-            ESX.TriggerServerCallback('conde_inventory:takePlayerItem', function(cb)
+            ESX.TriggerServerCallback('tqrp_inventoryhud:takePlayerItem', function(cb)
                 SetPedAmmo(playerPed, hash, 1)
             end, weapon, 1)
-        elseif Config.FuelCan == hash and ammoCount == nil then
+        elseif Config.FuelCan == hash and gunInfo.ammoCount == nil then
             SetPedAmmo(playerPed, hash, 1000)
         else
-            SetPedAmmo(playerPed, hash, ammoCount or 0)
+            SetPedAmmo(playerPed, hash, gunInfo.ammoCount or 0)
         end
         ClearPedTasks(playerPed)
         canFire = true
