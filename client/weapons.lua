@@ -50,7 +50,7 @@ end)
 -- This is just an example for the carbine rifle, do the same for the following...
 
 local weapons = {
-	[GetHashKey('WEAPON_CARBINERIFLE')] = {
+	[tostring(GetHashKey('WEAPON_CARBINERIFLE'))] = { -- Didn't test this, if it leads to problems replace with hardcoded hash AS A STRING
 		['scope'] = GetHashKey('COMPONENT_AT_SCOPE_MEDIUM'),
 		['suppressor'] = GetHashKey('COMPONENT_AT_AR_SUPP'),
 		['grip'] = GetHashKey('COMPONENT_AT_AR_AFGRIP'),
