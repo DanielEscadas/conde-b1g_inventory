@@ -47,6 +47,18 @@ AddEventHandler('conde-inventoryhud:removeCurrentWeapon', function()
     end
 end)
 
+-- This is just an example for the carbine rifle, do the same for the following...
+
+local weapons = {
+	['-2084633992'] = {
+		['scope'] = GetHashKey('COMPONENT_AT_SCOPE_MEDIUM'),
+		['suppressor'] = GetHashKey('COMPONENT_AT_AR_SUPP'),
+		['grip'] = GetHashKey('COMPONENT_AT_AR_AFGRIP'),
+		['extendedmag'] = GetHashKey('COMPONENT_CARBINERIFLE_CLIP_02'),
+		['flashlight'] = GetHashKey('COMPONENT_AT_AR_FLSH')
+	}
+}
+
 RegisterNetEvent('tqrp_inventoryhud:useAttach')
 AddEventHandler('tqrp_inventoryhud:useAttach', function(attach)
     local playerPed = PlayerPedId()
@@ -57,21 +69,16 @@ AddEventHandler('tqrp_inventoryhud:useAttach', function(attach)
             if currentWepAttachs[i] == attach then
                 hasAttach = true
             end
-        end
-        if weapons[hash] ~= nil and  weapons[hash][attach] ~= nil and not hasAttach then
-            ESX.TriggerServerCallback('tqrp_inventoryhud:takePlayerItem', function(cb)
-                if cb then
-                    table.insert(currentWepAttachs, attach)
-                    GiveWeaponComponentToPed(playerPed, hash, weapons[hash][attach])
-                else
-                    exports['mythic_notify']:SendAlert('error', 'Ocorreu um erro.')
-                end
-            end, attach, 1)
+		end
+		if weapons[tostring( hash )] ~= nil and weapons[tostring( hash )][attach] ~= nil and not hasAttach then
+			ESX.TriggerServerCallback('esx_inventory:removeItem', function(cb) end, attach)
+			table.insert(currentWepAttachs, attach)
+            GiveWeaponComponentToPed( playerPed, hash, weapons[tostring( hash )][attach] )
         else
-            exports['mythic_notify']:SendAlert('error', 'Esse attachment não é compativel ou já se encontra equipado.')
+            exports['b1g_notify']:Notify('error', 'Esse attachment não é compativel ou já se encontra equipado.')
         end
     else
-        exports['mythic_notify']:SendAlert('error', 'Nenhuma arma selecionada.')
+        exports['b1g_notify']:Notify('error', 'Nenhuma arma selecionada.')
     end
 end)
 
@@ -80,24 +87,37 @@ RegisterCommand("desequipar", function(source, args, rawCommand)
         local playerPed = PlayerPedId()
         local hash = GetHashKey(currentWeapon)
         if args[1] then
-            local attach = args[1]
+			local attach = args[1]
             for i = 1, #currentWepAttachs do
                 if currentWepAttachs[i] == attach then
                     ESX.TriggerServerCallback('tqrp_inventoryhud:addPlayerItem', function(cb)
                         if cb then
                             table.remove(currentWepAttachs, i)
-                            RemoveWeaponComponentFromPed(playerPed, hash, weapons[hash][attach])
+                            RemoveWeaponComponentFromPed(playerPed, hash, weapons[tostring( hash )][attach])
                         else
-                            exports['mythic_notify']:SendAlert('error', 'Espaço insuficiente.')
+                            exports['b1g_notify']:Notify('error', 'Espaço insuficiente.')
                         end          
                     end, currentWepAttachs[i], 1)
                     return
                 end
             end
-            exports['mythic_notify']:SendAlert('error', 'Essa arma não tem esse attachment.')
-        end
+            exports['b1g_notify']:Notify('error', 'Essa arma não tem esse attachment.')
+		else
+			for i = 1, #currentWepAttachs do
+				if currentWepAttachs[i] ~= nil then
+					ESX.TriggerServerCallback('tqrp_inventoryhud:addPlayerItem', function(cb)
+                        if cb then
+                            RemoveWeaponComponentFromPed(playerPed, hash, weapons[tostring( hash )][currentWepAttachs[i]])
+							table.remove(currentWepAttachs, i)
+                        else
+                            exports['b1g_notify']:Notify('error', 'Espaço insuficiente.')
+                        end          
+                    end, currentWepAttachs[i], 1)
+				end
+			end
+		end
     else
-        exports['mythic_notify']:SendAlert('error', 'Não tens nenhuma arma na mão.')
+        exports['b1g_notify']:Notify('error', 'Não tens nenhuma arma na mão.')
     end
 end)
 
@@ -132,7 +152,7 @@ function RemoveWeapon(weapon)
         Citizen.Wait(1600)
     end
     RemoveWeaponFromPed(playerPed, hash)
-    ClearPedTasks(playerPed)
+	ClearPedTasks(playerPed)
     canFire = true
     TriggerEvent('conde-inventoryhud:notification', weapon,"Guardaste", 1, false)
 end
@@ -176,8 +196,8 @@ function GiveWeapon(weapon)
         end
         GiveWeaponToPed(playerPed, hash, 1, false, true)
         for i = 1, #currentWepAttachs do
-            if weapons[hash] ~= nil then
-                GiveWeaponComponentToPed(playerPed, hash, weapons[hash][currentWepAttachs[i]])
+            if weapons[tostring( hash )] ~= nil then
+                GiveWeaponComponentToPed(playerPed, hash, weapons[tostring( hash )][currentWepAttachs[i]])
             end
         end
         if checkh[weapon] == hash then
