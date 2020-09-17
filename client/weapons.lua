@@ -50,7 +50,7 @@ end)
 -- This is just an example for the carbine rifle, do the same for the following...
 
 local weapons = {
-	['-2084633992'] = {
+	[GetHashKey('WEAPON_CARBINERIFLE')] = {
 		['scope'] = GetHashKey('COMPONENT_AT_SCOPE_MEDIUM'),
 		['suppressor'] = GetHashKey('COMPONENT_AT_AR_SUPP'),
 		['grip'] = GetHashKey('COMPONENT_AT_AR_AFGRIP'),
