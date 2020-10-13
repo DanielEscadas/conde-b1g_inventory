@@ -742,50 +742,56 @@ $(document).ready(function () {
         }
     });
 
-    $('#otherInventory').droppable({
-        drop: function (event, ui) {
-            itemData = ui.draggable.data("item");
-            itemInventory = ui.draggable.data("inventory");
+    $( '#playerInventory' ).droppable( {
+	drop: function ( event, ui ) {
+		itemData = ui.draggable.data( 'item' )
 
-            if (type === "trunk" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoTrunk", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val())
-                }));
-            } else if (type === "property" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoProperty", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val()),
-					owner : ownerHouse
-                }));
-            } else if (type === "vault" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoVault", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val())
-                }));
-            } else if (type === "player" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoPlayer", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val())
-                }));
-            } else if (type === "motels" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoMotel", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val())
-                }))
-            } else if (type === "motelsbed" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoMotelBed", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val())
-                }));
-            } else if (type === "glovebox" && itemInventory === "main") {
-                $.post("http://conde-b1g_inventory/PutIntoGlovebox", JSON.stringify({
-                    item: itemData,
-                    number: parseInt($("#count").val())
-                }));
-            }
-        }
-    });
+		const plValTable = { trunk: 'TakeFromTrunk', vault: 'TakeFromVault', player: 'TakeFromPlayer', normal: 'TakeFromFast', shop: 'TakeFromShop', motels: 'TakeFromMotel',
+			motelsbed: 'TakeFromMotelBed', glovebox: 'TakeFromGlovebox' }
+		
+		if ( ui.draggable.data( 'inventory' ) ) {
+			if ( itemInventory === 'second' ) {
+				if ( Object.keys( plValTable ).includes( type.toLowerCase() ) ) {
+					$.post( `http://conde-b1g_inventory/${ plValTable.type }`, JSON.stringify( {
+						item: itemData,
+						number: parseInt( $( '#count' ).val() )
+					} ) )
+				} else if ( type === 'property' ) {
+					$.post( 'http://conde-b1g_inventory/TakeFromProperty', JSON.stringify( {
+						item: itemData,
+						number: parseInt( $( '#count' ).val() ),
+						owner : ownerHouse
+					} ) )
+				}
+			}
+		}
+	}
+    } )
+
+    $( '#otherInventory' ).droppable( {
+        drop: function ( event, ui ) {
+		itemData = ui.draggable.data( 'item' )
+			
+		const valTable = { trunk: 'PutIntoTrunk', vault: 'PutIntoVault', player: 'PutIntoPlayer', motels: 'PutIntoMotel', motelsbed: 'PutIntoMotelBed', glovebox: 'PutIntoGlovebox' }
+
+            	if ( ui.draggable.data("inventory") ) {
+			if ( itemInventory === 'main' ) {
+				if ( Object.keys( valTable ).includes( type.toLowerCase() ) ) {
+					$.post( `http://conde-b1g_inventory/${ valTable.type }`, JSON.stringify( {
+						item: itemData,
+						number: parseInt( $( '#count' ).val() )
+					} ) )
+				} else if ( type === 'property' ) {
+					$.post("http://conde-b1g_inventory/PutIntoProperty", JSON.stringify({
+						item: itemData,
+						number: parseInt( $( '#count' ).val() ),
+						owner : ownerHouse
+					} ) )
+				}
+			}
+		}
+	}
+    } )
     $("#count").on("keypress keyup blur", function (event) {
         $(this).val($(this).val().replace(/[^\d].+/, ""));
         if ((event.which < 48 || event.which > 57)) {
