@@ -571,7 +571,11 @@ RegisterNUICallback("GiveItem", function(data, cb)
         end
         SetCurrentPedWeapon(PlayerPedId(), GetHashKey("weapon_unarmed"), 1)
         canPlayAnim = true
-        TriggerServerEvent("esx:giveInventoryItem", GetPlayerServerId(closestPlayer), data.item.type, data.item.name, count)
+        if data.item.type == "item_money" then 
+            TriggerServerEvent("esx:giveInventoryItem", GetPlayerServerId(closestPlayer), "item_account", "money", count)
+        else
+            TriggerServerEvent("esx:giveInventoryItem", GetPlayerServerId(closestPlayer), data.item.type, data.item.name, count)
+        end
         Wait(250)
         loadPlayerInventory()
     end
