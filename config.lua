@@ -1,9 +1,9 @@
 Config = {}
 Config.Locale = "en"
 Config.IncludeCash = true -- Include cash in inventory?
-Config.IncludeWeapons = false -- Include weapons in inventory?
+Config.IncludeWeapons = true -- Include weapons in inventory?
 Config.IncludeAccounts = true -- Include accounts (bank, black money, ...)?
-Config.ExcludeAccountsList = {"bank"} -- List of accounts names to exclude from inventory
+Config.ExcludeAccountsList = {"bank","money"} -- List of accounts names to exclude from inventory
 Config.OpenControl = 349 -- Key for opening inventory. Edit html/js/config.js to change key for closing it.
 Config.MaxWeight = 80 --SAME AS THE DEFAULT ON ES EXTENDED CONFIG
 
